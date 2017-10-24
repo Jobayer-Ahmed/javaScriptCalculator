@@ -7,7 +7,7 @@
 }
 
 body {
-	background-color: #54C7FD;
+	background-color: #ececec;
 	text-align: right;
 }
 
@@ -18,7 +18,7 @@ body {
 	margin: auto;
 	margin-top: 30px;
 	border-radius: 5px;
-	box-shadow: 0px 6px 80px #45a4d1;
+	box-shadow: 0px 6px 80px rgba(0, 0, 0, 0.24);
 }
 
 .output {
@@ -28,8 +28,8 @@ body {
 	padding-right: 30px;
 	font-size: 40px;
 	color: black;
-	margin-bottom: 40px;
-	overflow: hidden;
+	overflow-x: auto;
+	overflow-y: hidden;
 }
 
 .calBody button {
@@ -42,15 +42,23 @@ body {
 	transition: 50ms all ease;  
 	outline: none;  /* now it won't show the outline on Click */	
 	transform: scale(1);
+	font-weight: 600;
 }
 
 
 /* hover effect for the buttons */
 .calBody button:hover {
-	background: rgb(221, 221, 221);
+	background: rgb(234, 244, 255);
 }
 
 .calBody button:active {
 	transform: scale(0.9);
 	border-radius: 10px;
+}
+.calBody{
+	background: rgb(145, 215, 255);
+}
+
+#steps{
+	font-family:monospace
 }

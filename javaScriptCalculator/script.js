@@ -1,60 +1,104 @@
-$(document).ready(function() {
-	var userInput = [""];
-	var subTotal;
-	var variable1 = ["+","-","*","/"];
-	var variable2 = ["."];
-	var numb = [0,1,2,3,4,5,6,7,8,9];
+// no need for jquery: it's a really big library: bad for performace
 
-	function getValue(input) {
-		if(variable2.includes(userInput[userInput.length-1])===true && input==="."){
-    		console.log("Duplicate '.'");
-  		}
-  		else if(userInput.length===1 && variable1.includes(input)===false){
-    		userInput.push(input);
-  		}
-  		else if(variable1.includes(userInput[userInput.length-1])===false){
-    		userInput.push(input);
-  		}
-  		else if(numb.includes(Number(input))){
-	    	userInput.push(input);
-		}
-		updated();
+const $ = (selector) => {
+	return document.querySelector(selector);
+}
+
+
+
+
+class Calculator {
+	constructor() {
+		this.state = {
+			monitor: [],
+			output: ""
+		};
+		this.output = document.getElementById("steps");
+		this.input = document.getElementById("calBody");
+		this.bound = this.bound.bind(this);
+		this.getUserInput();
+		this.leaveZero();
 	}
 
-	function updated() {
-		subTotal= userInput.join("");
-    	$("#steps").html(subTotal);
+	render() {
+		this.output.innerHTML = this.state.output;
 	}
 
-	function getTotal(){
-		subTotal = userInput.join("");
-		console.log(subTotal + ": " + eval(subTotal));
-		$("#steps").html(eval(subTotal));
-	}
-
-	$("button").on("click",function(){
-		if(this.id==="deleteAll"){
-			userInput = [""];
-			updated();
-		}
-		else if(this.id==="backOne"){
-			userInput.pop();
-			updated();
-		}
-		else if(this.id==="total"){
-			getTotal();
-		}
-		else{
-			if(userInput[userInput.length-1].indexOf("+","-","/","*",".")===-1){
-				getValue(this.id);
+	getUserInput() {
+		this.input.addEventListener('click', (e) => {
+			var id = e.target.id;
+			if (id !== "calBody") {
+				const ctrkeys = ["deleteAll", "backOne", "total"];
+				ctrkeys.includes(id) ? this.commandStation(id) : this.regularClick(id);
 			}
-			else {
-				getValue(this.id);
-			}
-		}
-	});
-	function windowClose() {
-		window.open('','_parent','');
-		window.close();
+		});
 	}
-});
+
+
+
+	commandStation(id) {
+		switch (id) {
+			case "deleteAll":
+				this.deleteAll();
+				break;
+			case "backOne":
+				this.backOne();
+			case "total":
+				this.total();
+			default:
+				break;
+		}
+	}
+
+	regularClick(id) {
+		this.state.monitor.push(id);
+		this.state.output = this.state.monitor.join("");
+		this.render();
+		console.log(this.state.monitor);
+	}
+
+	deleteAll() {
+		this.state = {
+			monitor: [],
+			output: ""
+		}
+		this.render();
+		this.leaveZero();
+	}
+
+	backOne() {
+		this.state.monitor.pop();
+		this.state.output = this.state.monitor.join("");
+		this.render();
+		console.log(this.state)
+	}
+
+	total() {
+		const total = eval(this.state.monitor.join(""));
+
+		this.state = {
+			output: total,
+			monitor: [].concat(total)
+		};
+		this.render();
+	}
+
+
+
+	bound() {
+		this.deleteAll = this.deleteAll.bind(this);
+		this.backOne = this.backOne.bind(this);
+		this.total = this.total.bind(this);
+		this.commandStation = this.commandStation.bind(this);
+		this.getUserInput = this.getUserInput.bind(this);
+		this.render = this.render.bind(this);
+	}
+	leaveZero() {
+		this.output.innerHTML = "0";
+	}
+
+}
+
+
+
+const StartCalc = new Calculator();
