@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Javascript Calculator</title>
-	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
 	<div id="wrapper">
 		<div class="main">
 			<div class="output">
-				<div id="userOutput">
-					<span id="steps"></span>
+				<div id="steps">
 				</div>
 			</div>
-			<div class="calBody">
-				<button class="calcButton" id="deleteAll">ac</buttona>
-				<button class="calcButton" id="backOne">ce</button>
-				<button class="calcButton" id="/">/</button>
+
+			<div class="calBody" id="calBody">
+				<!-- removed the calbutton classes as you can target this in css without this : so just remove the junk -->
+
+				<!-- fixed typo : <buttona> -->
+				<button id="deleteAll">ac</button>
+				<button id="backOne">ce</button>
+				<button id="/">/</button>
 				<br>
-				<button class="calcButton" id="7">7</button>
-				<button class="calcButton" id="8">8</button>
-				<button class="calcButton" id="9">9</button>
-				<button class="calcButton" id="*">x</button>
+				<button id="7">7</button>
+				<button id="8">8</button>
+				<button id="9">9</button>
+				<button id="*">x</button>
 				<br>
-				<button class="calcButton" id="4">4</button>
-				<button class="calcButton" id="5">5</button>
-				<button class="calcButton" id="6">6</button>
-				<button class="calcButton" id="-">-</button>
+				<button id="4">4</button>
+				<button id="5">5</button>
+				<button id="6">6</button>
+				<button id="-">-</button>
 				<br>
-				<button class="calcButton" id="1">1</button>
-				<button class="calcButton" id="2">2</button>
-				<button class="calcButton" id="3">3</button>
-				<button class="calcButton" id="+">+</button>
+				<button id="1">1</button>
+				<button id="2">2</button>
+				<button id="3">3</button>
+				<button id="+">+</button>
 				<br>
-				<button class="calcButton" id="0">0</button>
-				<button class="calcButton" id=".">.</button>
-				<button class="calcButton" id="total">=</button>
+				<button id="0">0</button>
+				<button id=".">.</button>
+				<button id="total">=</button>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script type="text/javascript" src="assets/js/script.js"></script>
+	<script type="text/javascript" src="./script.js"></script>
 </body>
+
 </html>
