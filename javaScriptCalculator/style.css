@@ -1,6 +1,8 @@
 * {
 	padding: 0;
 	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	border: 0;
 }
 
@@ -16,7 +18,7 @@ body {
 	margin: auto;
 	margin-top: 30px;
 	border-radius: 5px;
-	box-shadow: 0px 0px 80px #45a4d1;
+	box-shadow: 0px 6px 80px #45a4d1;
 }
 
 .output {
@@ -30,16 +32,25 @@ body {
 	overflow: hidden;
 }
 
-.calcButton {
+.calBody button {
 	width: 72px;
 	height: 72px;
 	margin: 5px;
 	background-color: transparent;
 	font-size: 20px;
-	color: darkgray;
+	cursor: pointer;
+	transition: 50ms all ease;  
+	outline: none;  /* now it won't show the outline on Click */	
+	transform: scale(1);
 }
 
-.calButton:focus {
-	text-decoration: none;
-	outline: 0;
+
+/* hover effect for the buttons */
+.calBody button:hover {
+	background: rgb(221, 221, 221);
+}
+
+.calBody button:active {
+	transform: scale(0.9);
+	border-radius: 10px;
 }
