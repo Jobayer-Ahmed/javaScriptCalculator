@@ -54,7 +54,7 @@ class Calculator {
 		this.state.monitor.push(id);
 		this.state.output = this.state.monitor.join("");
 		this.render();
-		console.log(this.state.monitor);
+		console.log(this.state)
 	}
 
 	deleteAll() {
@@ -66,28 +66,36 @@ class Calculator {
 		this.leaveZero();
 	}
 
-	// not wroking
 	backOne() {
-		this.state.monitor.pop();
-		this.state.output = this.state.monitor.join("");
-		this.render();
-		console.log(this.state.monitor)
-		if (this.state.output === "") {
-			this.state.output = "0";
+		var monitor = [];
+		var state = this.state;
+
+		for (var i = 0; i < state.monitor.length - 1; i++) {
+			monitor[i] = state.monitor[i].toString().split("")
 		}
+
+		this.state = {
+			monitor: monitor,
+			output: monitor.join("")
+		}
+
+		if (state.output === "") {
+			state.output = "0";
+		}
+		this.render();
 	}
 
 	total() {
 		// give something wrong and see how it works
-		try{
+		try {
 			var total = eval(this.state.monitor.join(""));
-		}catch(e){
+		} catch (e) {
 			total = e;
 		}
 
 		this.state = {
 			output: total,
-			monitor: [].concat(total)
+			monitor: total.toString().split("")
 		};
 		this.render();
 	}
