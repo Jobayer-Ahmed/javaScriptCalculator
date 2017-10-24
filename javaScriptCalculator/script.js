@@ -66,15 +66,24 @@ class Calculator {
 		this.leaveZero();
 	}
 
+	// not wroking
 	backOne() {
 		this.state.monitor.pop();
 		this.state.output = this.state.monitor.join("");
 		this.render();
-		console.log(this.state)
+		console.log(this.state.monitor)
+		if (this.state.output === "") {
+			this.state.output = "0";
+		}
 	}
 
 	total() {
-		const total = eval(this.state.monitor.join(""));
+		// give something wrong and see how it works
+		try{
+			var total = eval(this.state.monitor.join(""));
+		}catch(e){
+			total = e;
+		}
 
 		this.state = {
 			output: total,
