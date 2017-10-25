@@ -1,40 +1,85 @@
-// no need for jquery: it's a really big library: bad for performace
+class History {
+	historyShow(state, deleteAll) {
+		const target = document.getElementById("history");
+		var p = document.createElement("p");
+		p.innerHTML = state.join("");
+		deleteAll ? target.innerHTML = "" : target.appendChild(p);
+	}
 
-const $ = (selector) => {
-	return document.querySelector(selector);
+	historyPush(state) {
+		this.history.push(state);
+		this.redoUndoKeyPressed = this.history.length;
+		this.historyShow(state);
+	}
+
+	deleteHistory() {
+		this.history = [];
+		this.historyShow([], "delete");
+		this.redoUndoKeyPressed = this.history.length;
+	}
+
+	RedoOrUndo(cmd) {
+		cmd === "undo" && this.redoUndoKeyPressed ? this.goAhead("undo") : false;
+		cmd === "redo" && this.redoUndoKeyPressed < this.history.length - 1 ? this.goAhead("redo") : true;
+	}
+
+	goAhead(cmd) {
+		cmd === "undo" ? this.redoUndoKeyPressed-- : this.redoUndoKeyPressed++;
+		this.setState({
+			input: this.history[this.redoUndoKeyPressed]
+		})
+	}
 }
 
 
 
 
-class Calculator {
+
+
+
+
+class Calculator extends History {
 	constructor() {
-		this.state = {
-			monitor: [],
-			output: ""
-		};
-		this.output = document.getElementById("steps");
-		this.input = document.getElementById("calBody");
-		this.bound = this.bound.bind(this);
+		super();
+		this.state = [];
+		this.history = [];
+		this.redoUndoKeyPressed = 0;
+		this.instantiate();
+	}
+
+	instantiate() {
 		this.getUserInput();
-		this.leaveZero();
+		this.render();
+		this.history.push();
 	}
 
-	render() {
-		this.output.innerHTML = this.state.output;
+	render(total) {
+		var noData = this.state.join("");
+		noData === "" ? noData = 0 : true;
+		document.getElementById("steps").innerHTML = total ? total : noData;
 	}
 
-	getUserInput() {
-		this.input.addEventListener('click', (e) => {
-			var id = e.target.id;
-			if (id !== "calBody") {
-				const ctrkeys = ["deleteAll", "backOne", "total"];
-				ctrkeys.includes(id) ? this.commandStation(id) : this.regularClick(id);
-			}
+	regularClick(id) {
+		this.setState({
+			input: this.state.concat(id)
+		})
+	}
+
+	backOne() {
+		this.state.pop();
+		this.render();
+	}
+
+	deleteAll() {
+		this.setState({
+			input: []
 		});
 	}
 
-
+	setState(obj, total) {
+		this.state = obj.input;
+		this.render(total);
+	}
 
 	commandStation(id) {
 		switch (id) {
@@ -43,79 +88,46 @@ class Calculator {
 				break;
 			case "backOne":
 				this.backOne();
+				break;
 			case "total":
-				this.total();
+				this.getTotal("total");
+				break;
+			case "undo":
+				this.RedoOrUndo("undo");
+				break;
+			case "redo":
+				this.RedoOrUndo("redo");
+				break;
 			default:
 				break;
 		}
 	}
 
-	regularClick(id) {
-		this.state.monitor.push(id);
-		this.state.output = this.state.monitor.join("");
-		this.render();
-		console.log(this.state)
-	}
-
-	deleteAll() {
-		this.state = {
-			monitor: [],
-			output: ""
-		}
-		this.render();
-		this.leaveZero();
-	}
-
-	backOne() {
-		var monitor = [];
-		var state = this.state;
-
-		for (var i = 0; i < state.monitor.length - 1; i++) {
-			monitor[i] = state.monitor[i].toString().split("")
-		}
-
-		this.state = {
-			monitor: monitor,
-			output: monitor.join("")
-		}
-
-		if (state.output === "") {
-			state.output = "0";
-		}
-		this.render();
-	}
-
-	total() {
-		// give something wrong and see how it works
+	getTotal(cmd) {
 		try {
-			var total = eval(this.state.monitor.join(""));
+			var total = eval(this.state.join(""));
+			this.historyPush(this.state);
 		} catch (e) {
-			total = e;
+			var total = e;
 		}
-
-		this.state = {
-			output: total,
-			monitor: total.toString().split("")
-		};
-		this.render();
+		this.setState({
+			input: [].concat(total.toString().split(""))
+		}, total);
 	}
 
-
-
-	bound() {
-		this.deleteAll = this.deleteAll.bind(this);
-		this.backOne = this.backOne.bind(this);
-		this.total = this.total.bind(this);
-		this.commandStation = this.commandStation.bind(this);
-		this.getUserInput = this.getUserInput.bind(this);
-		this.render = this.render.bind(this);
+	getUserInput() {
+		document.getElementById("deleteHistory").addEventListener("click", (e) => {
+			this.deleteHistory();
+		});
+		document.getElementById("calBody").addEventListener('click', (e) => {
+			var id = e.target.id;
+			if (id !== "calBody") {
+				const ctrkeys = ["deleteAll", "backOne", "total", "undo", "redo"];
+				ctrkeys.includes(id) ? this.commandStation(id) : this.regularClick(id);
+			}
+		});
 	}
-	leaveZero() {
-		this.output.innerHTML = "0";
-	}
-
 }
-
 
 
 const StartCalc = new Calculator();
