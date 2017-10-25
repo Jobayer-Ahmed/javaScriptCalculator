@@ -74,6 +74,7 @@ class Calculator extends History {
 		this.setState({
 			input: []
 		});
+		this.redoUndoKeyPressed = this.history.length;
 	}
 
 	setState(obj, total) {
