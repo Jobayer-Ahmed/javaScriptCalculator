@@ -103,7 +103,7 @@ class Calculator extends History {
 				break;
 		}
 	}
-
+ // This is comment
 	getTotal(cmd) {
 		try {
 			var total = eval(this.state.join(""));
